@@ -1,5 +1,7 @@
 "use client";
+
 import Editor from "@/app/features/editor/components/editor";
+
 const EditorProjectPage = () => {
   return (
     <div className=" h-screen">
@@ -7,4 +9,5 @@ const EditorProjectPage = () => {
     </div>
   );
 };
+
 export default EditorProjectPage;

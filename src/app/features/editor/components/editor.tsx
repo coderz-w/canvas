@@ -16,6 +16,7 @@ export default function Editor() {
     });
     init({ initialCanvas: canvas, initialContainer: containerRef.current! });
   }, [init]);
+
   return (
     <div className=" h-full flex">
       <div className=" flex-1 h-full bg-muted" ref={containerRef}>
