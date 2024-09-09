@@ -1,6 +1,6 @@
 "use client";
 
-import Editor from "@/app/features/editor/components/editor";
+import { Editor } from "@/app/features/editor/components/editor";
 
 const EditorProjectPage = () => {
   return (
