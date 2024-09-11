@@ -17,7 +17,6 @@ export const useAutoResize = ({ canvas, container }: UseAutoResizeProps) => {
     canvas.setHeight(height);
 
     const center = canvas.getCenter();
-    const zoomRatio = 0.85;
     const localWorkSpace = canvas
       .getObjects()
       .find((object) => object.name === "clip");
@@ -29,7 +28,7 @@ export const useAutoResize = ({ canvas, container }: UseAutoResizeProps) => {
       height: height,
     });
 
-    const zoom = zoomRatio * scale;
+    const zoom = scale * 0.9;
     canvas.setViewportTransform(fabric.iMatrix.concat());
     canvas.zoomToPoint(new fabric.Point(center.left, center.top), zoom);
 
