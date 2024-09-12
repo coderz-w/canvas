@@ -17,6 +17,8 @@ import {
   STROKE_COLOR,
   STROKE_WIDTH,
   STROKE_DASH_ARRAY,
+  TEXT_OPTIONS,
+  FONT_FAMILY,
 } from "@/app/features/editor/const";
 import { isTextType } from "@/app/features/editor/utils";
 
@@ -26,6 +28,7 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedObjects, setSelectedObjects] = useState<fabric.Object[]>([]);
   const [fillColor, setFillColor] = useState(FILL_COLOR);
+  const [fontFamily, setFontFamily] = useState(FONT_FAMILY);
   const [strokeColor, setStrokeColor] = useState(STROKE_COLOR);
   const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH);
   const [strokeDashArray, setStrokeDashArray] =
@@ -47,6 +50,8 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
         selectedObjects,
         strokeDashArray,
         setStrokeDashArray,
+        fontFamily,
+        setFontFamily,
       });
     } else {
       return undefined;
@@ -58,6 +63,7 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
     strokeColor,
     strokeWidth,
     strokeDashArray,
+    fontFamily,
   ]);
 
   const init = useCallback(
@@ -118,6 +124,8 @@ const buildEditor = ({
   setStrokeWidth,
   selectedObjects,
   setStrokeDashArray,
+  fontFamily,
+  setFontFamily,
 }: BuildEditorProps): Editor => {
   const getWorkspace = () => {
     return canvas.getObjects().find((object) => object.name === "clip");
@@ -146,6 +154,15 @@ const buildEditor = ({
       });
       canvas.renderAll();
     },
+    setFontFamily2Active: (font: string) => {
+      setFontFamily(font);
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object._set("fontFamily", font);
+        }
+      });
+      canvas.renderAll();
+    },
     bringForward: () => {
       canvas.getActiveObjects().forEach((object) => {
         canvas.bringForward(object);
@@ -160,6 +177,15 @@ const buildEditor = ({
 
       const workspace = getWorkspace();
       workspace?.sendToBack();
+    },
+    addText: (value, options) => {
+      const object = new fabric.Textbox(value, {
+        ...TEXT_OPTIONS,
+        fill: fillColor,
+        ...options,
+      });
+
+      addToCanvas(object);
     },
     addCircle: () => {
       const object = new fabric.Circle({
@@ -325,10 +351,24 @@ const buildEditor = ({
 
       return value;
     },
+    getActiveFontFamily: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return fontFamily;
+      }
+
+      const value =
+        selectedObject.get("fontFamily" as keyof fabric.Object) || fontFamily;
+
+      // Currently, gradients & patterns are not supported
+      return value;
+    },
     fillColor,
     strokeWidth,
     strokeColor,
     selectedObjects,
+    fontFamily,
     canvas,
   };
 };
