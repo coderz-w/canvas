@@ -13,6 +13,7 @@ import { ActiveTool, Editor as EditorType } from "@/app/features/editor/type";
 import { ShapeSidebar } from "@/app/features/editor/components/shapeSidebar";
 import { FillColorSidebar } from "@/app/features/editor/components/fillColorSidebar";
 import { StrokeColorSidebar } from "@/app/features/editor/components/strokeColorSidebar";
+import { StrokeWidthSidebar } from "@/app/features/editor/components/strokeWidthSidebar";
 
 export const Editor = () => {
   const canvasRef = useRef(null);
@@ -83,6 +84,11 @@ export const Editor = () => {
           onChangeActiveTool={onChangeActiveTool}
         />
         <StrokeColorSidebar
+          editor={editor as EditorType}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <StrokeWidthSidebar
           editor={editor as EditorType}
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}

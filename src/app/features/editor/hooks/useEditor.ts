@@ -16,6 +16,7 @@ import {
   FILL_COLOR,
   STROKE_COLOR,
   STROKE_WIDTH,
+  STROKE_DASH_ARRAY,
 } from "@/app/features/editor/const";
 import { isTextType } from "@/app/features/editor/utils";
 
@@ -27,6 +28,8 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
   const [fillColor, setFillColor] = useState(FILL_COLOR);
   const [strokeColor, setStrokeColor] = useState(STROKE_COLOR);
   const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH);
+  const [strokeDashArray, setStrokeDashArray] =
+    useState<number[]>(STROKE_DASH_ARRAY);
 
   useCanvasEvents({ canvas, setSelectedObjects, clearSelectionCallback });
   useAutoResize({ canvas, container });
@@ -42,11 +45,20 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
         strokeWidth,
         setStrokeWidth,
         selectedObjects,
+        strokeDashArray,
+        setStrokeDashArray,
       });
     } else {
       return undefined;
     }
-  }, [canvas, fillColor, selectedObjects, strokeColor, strokeWidth]);
+  }, [
+    canvas,
+    fillColor,
+    selectedObjects,
+    strokeColor,
+    strokeWidth,
+    strokeDashArray,
+  ]);
 
   const init = useCallback(
     ({
@@ -100,10 +112,12 @@ const buildEditor = ({
   fillColor,
   setFillColor,
   strokeColor,
+  strokeDashArray,
   setStrokeColor,
   strokeWidth,
   setStrokeWidth,
   selectedObjects,
+  setStrokeDashArray,
 }: BuildEditorProps): Editor => {
   const getWorkspace = () => {
     return canvas.getObjects().find((object) => object.name === "clip");
@@ -234,6 +248,13 @@ const buildEditor = ({
       });
       canvas?.renderAll();
     },
+    setStrokeDashArray2Active: (value: number[]) => {
+      setStrokeDashArray(value);
+      canvas.getActiveObjects().forEach((object) => {
+        object.set({ strokeDashArray: value });
+      });
+      canvas.renderAll();
+    },
     getActiveFillColor: () => {
       const selectedObject = selectedObjects[0];
 
@@ -256,6 +277,28 @@ const buildEditor = ({
       const value = selectedObject.get("stroke") || strokeColor;
 
       // Currently, gradients & patterns are not supported
+      return value;
+    },
+    getActiveStrokeWidth: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return strokeWidth;
+      }
+
+      const value = selectedObject.get("strokeWidth") || strokeWidth;
+
+      return value;
+    },
+    getActiveStrokeDashArray: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return strokeDashArray;
+      }
+
+      const value = selectedObject.get("strokeDashArray") || strokeDashArray;
+
       return value;
     },
     fillColor,
