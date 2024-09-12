@@ -19,6 +19,7 @@ import {
   STROKE_DASH_ARRAY,
   TEXT_OPTIONS,
   FONT_FAMILY,
+  FONT_WEIGHT,
 } from "@/app/features/editor/const";
 import { isTextType } from "@/app/features/editor/utils";
 
@@ -151,6 +152,14 @@ const buildEditor = ({
     setOpacity2Active: (opacity: number) => {
       canvas.getActiveObjects().forEach((object) => {
         object.opacity = opacity;
+      });
+      canvas.renderAll();
+    },
+    setFontWeight2Active: (weight: number) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object._set("fontWeight", weight);
+        }
       });
       canvas.renderAll();
     },
@@ -360,6 +369,19 @@ const buildEditor = ({
 
       const value =
         selectedObject.get("fontFamily" as keyof fabric.Object) || fontFamily;
+
+      // Currently, gradients & patterns are not supported
+      return value;
+    },
+    getActiveFontWeight: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return FONT_WEIGHT;
+      }
+
+      const value =
+        selectedObject.get("fontWeight" as keyof fabric.Object) || FONT_WEIGHT;
 
       // Currently, gradients & patterns are not supported
       return value;

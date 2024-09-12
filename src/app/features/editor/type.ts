@@ -43,6 +43,7 @@ export interface Editor {
   addInverseTriangle: () => void;
   addDiamond: () => void;
   setOpacity2Active: (opacity: number) => void;
+  setFontWeight2Active: (weight: number) => void;
   setFillColor2Active: (color: string) => void;
   setStrokeWidth2Active: (width: number) => void;
   setStrokeColor2Active: (color: string) => void;
@@ -54,6 +55,7 @@ export interface Editor {
   getActiveOpacity: () => number;
   getActiveStrokeDashArray: () => number[];
   getActiveFontFamily: () => string;
+  getActiveFontWeight: () => number;
   fillColor: string;
   strokeColor: string;
   strokeWidth: number;

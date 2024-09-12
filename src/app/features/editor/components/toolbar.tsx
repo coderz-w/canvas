@@ -1,12 +1,15 @@
 import { BsBorderWidth } from "react-icons/bs";
 import { ArrowUp, ArrowDown, ChevronDown } from "lucide-react";
 import { RxTransparencyGrid } from "react-icons/rx";
+import { FaBold } from "react-icons/fa";
+import { useState } from "react";
 
 import { Editor, ActiveTool } from "@/app/features/editor/type";
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { isTextType } from "@/app/features/editor/utils";
+import { FONT_WEIGHT } from "@/app/features/editor/const";
 
 interface ToolbarProps {
   editor: Editor | undefined;
@@ -19,11 +22,32 @@ export const Toolbar = ({
   activeTool,
   onChangeActiveTool,
 }: ToolbarProps) => {
-  const fillColor = editor?.getActiveFillColor();
-  const strokeColor = editor?.getActiveStrokeColor();
+  const initialFillColor = editor?.getActiveFillColor();
+  const initialStrokeColor = editor?.getActiveStrokeColor();
+  const initialFontFamily = editor?.getActiveFontFamily();
+  const initialFontWeight = editor?.getActiveFontWeight() || FONT_WEIGHT;
   const selectedObjectType = editor?.selectedObjects[0]?.type;
   const isText = isTextType(selectedObjectType);
-  const fontFamily = editor?.getActiveFontFamily();
+  const [properties, setProperties] = useState({
+    fillColor: initialFillColor,
+    strokeColor: initialStrokeColor,
+    fontFamily: initialFontFamily,
+    fontWeight: initialFontWeight,
+  });
+
+  const toggleBold = () => {
+    const selectedObject = editor?.selectedObjects[0];
+    if (!selectedObject) return;
+
+    const newWeight = properties.fontWeight > 500 ? 500 : 700;
+    editor?.setFontWeight2Active(newWeight);
+    setProperties((pre) => {
+      return {
+        ...pre,
+        fontWeight: newWeight,
+      };
+    });
+  };
 
   if (editor?.selectedObjects.length === 0) {
     return (
@@ -43,7 +67,7 @@ export const Toolbar = ({
           >
             <div
               className="rounded-sm size-4 border"
-              style={{ backgroundColor: fillColor }}
+              style={{ backgroundColor: properties.fillColor }}
             />
           </Button>
         </Hint>
@@ -59,7 +83,7 @@ export const Toolbar = ({
             >
               <div
                 className="rounded-sm size-4 border-2 bg-white"
-                style={{ borderColor: strokeColor }}
+                style={{ borderColor: properties.strokeColor }}
               />
             </Button>
           </Hint>
@@ -91,8 +115,24 @@ export const Toolbar = ({
                 activeTool === "font" && "bg-gray-100",
               )}
             >
-              <div className=" max-w-[100px] truncate">{fontFamily}</div>
+              <div className=" max-w-[100px] truncate">
+                {properties.fontFamily}
+              </div>
               <ChevronDown className=" size-4 ml-2 shrink-0" />
+            </Button>
+          </Hint>
+        </div>
+      )}
+      {isText && (
+        <div className="flex items-center h-full justify-center">
+          <Hint label="Bold" side="bottom" sideOffset={5}>
+            <Button
+              onClick={() => toggleBold()}
+              size="icon"
+              variant="ghost"
+              className={cn(properties.fontWeight > 500 && "bg-gray-100")}
+            >
+              <FaBold className=" size-4" />
             </Button>
           </Hint>
         </div>
