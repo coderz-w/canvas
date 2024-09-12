@@ -33,6 +33,7 @@ export type BuildEditorProps = {
 };
 
 export interface Editor {
+  delete2Active: () => void;
   bringForward: () => void;
   sendBackwards: () => void;
   addText: (value: string, options?: ITextboxOptions) => void;
