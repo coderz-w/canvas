@@ -163,6 +163,30 @@ const buildEditor = ({
       });
       canvas.renderAll();
     },
+    setFontStyle2Active: (style: string) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object._set("fontStyle", style);
+        }
+      });
+      canvas.renderAll();
+    },
+    setFontLinethrough2Active: (through: boolean) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object._set("linethrough", through);
+        }
+      });
+      canvas.renderAll();
+    },
+    setFontUnderline2Active: (underline: boolean) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object._set("underline", underline);
+        }
+      });
+      canvas.renderAll();
+    },
     setFontFamily2Active: (font: string) => {
       setFontFamily(font);
       canvas.getActiveObjects().forEach((object) => {
@@ -171,6 +195,15 @@ const buildEditor = ({
         }
       });
       canvas.renderAll();
+    },
+    setTextAlign2Active: (align: string) => {
+      canvas.getActiveObjects().forEach((object) => {
+        object._set("textAlign", align);
+      });
+      canvas.renderAll();
+    },
+    getActiveStrokeWidth: () => {
+      return canvas.getActiveObjects()[0]?.strokeWidth || 1;
     },
     bringForward: () => {
       canvas.getActiveObjects().forEach((object) => {
@@ -338,17 +371,6 @@ const buildEditor = ({
       // Currently, gradients & patterns are not supported
       return value;
     },
-    getActiveStrokeWidth: () => {
-      const selectedObject = selectedObjects[0];
-
-      if (!selectedObject) {
-        return strokeWidth;
-      }
-
-      const value = selectedObject.get("strokeWidth") || strokeWidth;
-
-      return value;
-    },
     getActiveStrokeDashArray: () => {
       const selectedObject = selectedObjects[0];
 
@@ -382,6 +404,58 @@ const buildEditor = ({
 
       const value =
         selectedObject.get("fontWeight" as keyof fabric.Object) || FONT_WEIGHT;
+
+      // Currently, gradients & patterns are not supported
+      return value;
+    },
+    getActiveFontStyle: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return "normal";
+      }
+
+      const value =
+        selectedObject.get("fontStyle" as keyof fabric.Object) || "normal";
+
+      // Currently, gradients & patterns are not supported
+      return value;
+    },
+    getActiveFontLinethrough: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return false;
+      }
+
+      const value =
+        selectedObject.get("linethrough" as keyof fabric.Object) || false;
+
+      // Currently, gradients & patterns are not supported
+      return value;
+    },
+    getActiveFontUnderline: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return false;
+      }
+
+      const value =
+        selectedObject.get("underline" as keyof fabric.Object) || false;
+
+      // Currently, gradients & patterns are not supported
+      return value;
+    },
+    getActiveTextAlign: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return "left";
+      }
+
+      const value =
+        selectedObject.get("textAlign" as keyof fabric.Object) || "left";
 
       // Currently, gradients & patterns are not supported
       return value;
