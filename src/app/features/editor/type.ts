@@ -51,6 +51,7 @@ export interface Editor {
   setFontFamily2Active: (fontFamily: string) => void;
   setFontLinethrough2Active: (linethrough: boolean) => void;
   setTextAlign2Active: (align: string) => void;
+  setFontSize2Active: (size: number) => void;
   setFontUnderline2Active: (underline: boolean) => void;
   setStrokeDashArray2Active: (dashArray: number[]) => void;
   getActiveFillColor: () => string;
@@ -62,6 +63,7 @@ export interface Editor {
   getActiveTextAlign: () => string;
   getActiveFontFamily: () => string;
   getActiveFontWeight: () => number;
+  getActiveFontSize: () => number;
   getActiveFontLinethrough: () => boolean;
   getActiveFontUnderline: () => boolean;
   fillColor: string;

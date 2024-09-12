@@ -20,6 +20,7 @@ import {
   TEXT_OPTIONS,
   FONT_FAMILY,
   FONT_WEIGHT,
+  FONT_SIZE,
 } from "@/app/features/editor/const";
 import { isTextType } from "@/app/features/editor/utils";
 
@@ -199,6 +200,14 @@ const buildEditor = ({
     setTextAlign2Active: (align: string) => {
       canvas.getActiveObjects().forEach((object) => {
         object._set("textAlign", align);
+      });
+      canvas.renderAll();
+    },
+    setFontSize2Active: (size: number) => {
+      canvas.getActiveObjects().forEach((object) => {
+        if (isTextType(object.type)) {
+          object._set("fontSize", size);
+        }
       });
       canvas.renderAll();
     },
@@ -456,6 +465,19 @@ const buildEditor = ({
 
       const value =
         selectedObject.get("textAlign" as keyof fabric.Object) || "left";
+
+      // Currently, gradients & patterns are not supported
+      return value;
+    },
+    getActiveFontSize: () => {
+      const selectedObject = selectedObjects[0];
+
+      if (!selectedObject) {
+        return FONT_SIZE;
+      }
+
+      const value =
+        selectedObject.get("fontSize" as keyof fabric.Object) || FONT_SIZE;
 
       // Currently, gradients & patterns are not supported
       return value;
