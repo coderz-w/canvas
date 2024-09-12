@@ -30,6 +30,8 @@ export type BuildEditorProps = {
 };
 
 export interface Editor {
+  bringForward: () => void;
+  sendBackwards: () => void;
   addCircle: () => void;
   addSoftRectangle: () => void;
   addRectangle: () => void;
