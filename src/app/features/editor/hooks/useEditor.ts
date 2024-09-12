@@ -137,6 +137,15 @@ const buildEditor = ({
   };
 
   return {
+    getActiveOpacity: () => {
+      return canvas.getActiveObjects()[0]?.opacity || 1;
+    },
+    setOpacity2Active: (opacity: number) => {
+      canvas.getActiveObjects().forEach((object) => {
+        object.opacity = opacity;
+      });
+      canvas.renderAll();
+    },
     bringForward: () => {
       canvas.getActiveObjects().forEach((object) => {
         canvas.bringForward(object);

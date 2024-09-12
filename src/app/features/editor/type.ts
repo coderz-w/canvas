@@ -38,6 +38,7 @@ export interface Editor {
   addTriangle: () => void;
   addInverseTriangle: () => void;
   addDiamond: () => void;
+  setOpacity2Active: (opacity: number) => void;
   setFillColor2Active: (color: string) => void;
   setStrokeWidth2Active: (width: number) => void;
   setStrokeColor2Active: (color: string) => void;
@@ -45,6 +46,7 @@ export interface Editor {
   getActiveFillColor: () => string;
   getActiveStrokeColor: () => string;
   getActiveStrokeWidth: () => number;
+  getActiveOpacity: () => number;
   getActiveStrokeDashArray: () => number[];
   fillColor: string;
   strokeColor: string;

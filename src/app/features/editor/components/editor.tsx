@@ -14,6 +14,7 @@ import { ShapeSidebar } from "@/app/features/editor/components/shapeSidebar";
 import { FillColorSidebar } from "@/app/features/editor/components/fillColorSidebar";
 import { StrokeColorSidebar } from "@/app/features/editor/components/strokeColorSidebar";
 import { StrokeWidthSidebar } from "@/app/features/editor/components/strokeWidthSidebar";
+import { OpacitySidebar } from "@/app/features/editor/components/opacitySidebar";
 
 export const Editor = () => {
   const canvasRef = useRef(null);
@@ -89,6 +90,11 @@ export const Editor = () => {
           onChangeActiveTool={onChangeActiveTool}
         />
         <StrokeWidthSidebar
+          editor={editor as EditorType}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <OpacitySidebar
           editor={editor as EditorType}
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}
