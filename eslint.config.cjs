@@ -59,6 +59,16 @@ module.exports = [
       ],
       'newline-before-return': 'error',
       '@typescript-eslint/no-explicit-any': 'off',
+      'comma-dangle': [
+        'off', 
+        {
+          arrays: 'never',
+          objects: 'never',
+          imports: 'never',
+          exports: 'never',
+          functions: 'never',
+        },
+      ],
     },
     settings: {
       react: {

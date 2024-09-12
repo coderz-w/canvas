@@ -85,6 +85,16 @@ body {
     --chart-5: 340 75% 55%;
   }
 }
+.circle-picker {
+  width: auto !important;
+}
+
+.chrome-picker {
+  width: auto !important;
+  box-shadow: none;
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
+}
 
 @layer base {
   * {
