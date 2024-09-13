@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ActiveTool, Editor } from "@/app/features/editor/type";
 import { ToolSidebarClose } from "@/app/features/editor/components/toolSidebarClose";
 import { ToolSidebarHeader } from "@/app/features/editor/components/toolSidebarHeader";
+import ImgUpload from "@/app/features/editor/components/imgUpload";
 // import { useGetImages } from "@/app/features/editor/hooks/useGetImages";
 
 interface ImageSidebarProps {
@@ -27,6 +28,18 @@ export const ImageSidebar = ({
   const onClose = () => {
     onChangeActiveTool("select");
   };
+  const handleUploadFile = (file: File | null) => {
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      editor?.addImage(dataUrl);
+    };
+
+    reader.readAsDataURL(file);
+  };
 
   return (
     <aside
@@ -39,6 +52,7 @@ export const ImageSidebar = ({
         title="Images"
         description="Add Images to your canvas"
       />
+      <ImgUpload onChange={(file) => handleUploadFile(file)} />
       {isLoading && (
         <div className="flex items-center justify-center flex-1">
           <Loader className="size-4 text-muted-foreground animate-spin" />
