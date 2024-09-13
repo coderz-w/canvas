@@ -245,6 +245,19 @@ const buildEditor = ({
 
       addToCanvas(object);
     },
+    addImage: (url: string) => {
+      fabric.Image.fromURL(
+        url,
+        (img) => {
+          const workspace = getWorkspace();
+          img.scaleToWidth(workspace?.width || 0);
+          img.scaleToHeight(workspace?.height || 0);
+
+          addToCanvas(img);
+        },
+        { crossOrigin: "anonymous" },
+      );
+    },
     addCircle: () => {
       const object = new fabric.Circle({
         ...CIRCLE_OPTIONS,

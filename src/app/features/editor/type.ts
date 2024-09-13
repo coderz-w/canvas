@@ -37,6 +37,7 @@ export interface Editor {
   bringForward: () => void;
   sendBackwards: () => void;
   addText: (value: string, options?: ITextboxOptions) => void;
+  addImage: (url: string) => void;
   addCircle: () => void;
   addSoftRectangle: () => void;
   addRectangle: () => void;
