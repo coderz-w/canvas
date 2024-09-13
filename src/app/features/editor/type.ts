@@ -30,6 +30,8 @@ export type BuildEditorProps = {
   setStrokeDashArray: (dashArray: number[]) => void;
   fontFamily: string;
   setFontFamily: (fontFamily: string) => void;
+  imageFilter: string;
+  setImageFilter: (filter: string) => void;
 };
 
 export interface Editor {
@@ -44,6 +46,7 @@ export interface Editor {
   addTriangle: () => void;
   addInverseTriangle: () => void;
   addDiamond: () => void;
+  setImageFilter2Active: (filter: string) => void;
   setFontStyle2Active: (style: string) => void;
   setOpacity2Active: (opacity: number) => void;
   setFontWeight2Active: (weight: number) => void;
@@ -73,6 +76,8 @@ export interface Editor {
   strokeWidth: number;
   selectedObjects: fabric.Object[];
   fontFamily: string;
+  imageFilter: string;
+  setImageFilter: (filter: string) => void;
   canvas: fabric.Canvas;
 }
 export interface EditorHookProps {

@@ -22,7 +22,7 @@ import {
   FONT_WEIGHT,
   FONT_SIZE,
 } from "@/app/features/editor/const";
-import { isTextType } from "@/app/features/editor/utils";
+import { createFilter, isTextType } from "@/app/features/editor/utils";
 
 export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
@@ -35,6 +35,7 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
   const [strokeWidth, setStrokeWidth] = useState(STROKE_WIDTH);
   const [strokeDashArray, setStrokeDashArray] =
     useState<number[]>(STROKE_DASH_ARRAY);
+  const [imageFilter, setImageFilter] = useState<string>("none");
 
   useCanvasEvents({ canvas, setSelectedObjects, clearSelectionCallback });
   useAutoResize({ canvas, container });
@@ -54,6 +55,8 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
         setStrokeDashArray,
         fontFamily,
         setFontFamily,
+        imageFilter,
+        setImageFilter,
       });
     } else {
       return undefined;
@@ -66,6 +69,7 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
     strokeWidth,
     strokeDashArray,
     fontFamily,
+    imageFilter,
   ]);
 
   const init = useCallback(
@@ -128,6 +132,8 @@ const buildEditor = ({
   setStrokeDashArray,
   fontFamily,
   setFontFamily,
+  imageFilter,
+  setImageFilter,
 }: BuildEditorProps): Editor => {
   const getWorkspace = () => {
     return canvas.getObjects().find((object) => object.name === "clip");
@@ -156,6 +162,19 @@ const buildEditor = ({
     },
     getActiveOpacity: () => {
       return canvas.getActiveObjects()[0]?.opacity || 1;
+    },
+    setImageFilter2Active: (filter: string) => {
+      const objects = canvas.getActiveObjects();
+      objects.forEach((object) => {
+        if (object.type === "image") {
+          const imageObject = object as fabric.Image;
+          const effect = createFilter(filter);
+          imageObject.filters = effect ? [effect] : [];
+          imageObject.applyFilters();
+          canvas.renderAll();
+        }
+      });
+      canvas.renderAll();
     },
     setOpacity2Active: (opacity: number) => {
       canvas.getActiveObjects().forEach((object) => {
@@ -507,6 +526,8 @@ const buildEditor = ({
     strokeColor,
     selectedObjects,
     fontFamily,
+    imageFilter,
+    setImageFilter,
     canvas,
   };
 };
