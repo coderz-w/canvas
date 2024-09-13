@@ -18,6 +18,8 @@ export type ActiveTool =
   | "templates";
 
 export type BuildEditorProps = {
+  copy: () => void;
+  paste: () => void;
   canvas: fabric.Canvas;
   fillColor: string;
   strokeColor: string;
@@ -35,6 +37,8 @@ export type BuildEditorProps = {
 };
 
 export interface Editor {
+  copy: () => void;
+  paste: () => void;
   delete2Active: () => void;
   bringForward: () => void;
   sendBackwards: () => void;

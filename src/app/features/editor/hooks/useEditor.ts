@@ -3,6 +3,7 @@ import { useCallback, useState, useMemo } from "react";
 
 import { useAutoResize } from "@/app/features/editor/hooks/useAutoResize";
 import { useCanvasEvents } from "@/app/features/editor/hooks/useCanvasEvents";
+import { useClipboard } from "@/app/features/editor/hooks/useClipboard";
 import {
   BuildEditorProps,
   Editor,
@@ -38,6 +39,8 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
   const [imageFilter, setImageFilter] = useState<string>("none");
 
   useCanvasEvents({ canvas, setSelectedObjects, clearSelectionCallback });
+
+  const { copy, paste } = useClipboard({ canvas });
   useAutoResize({ canvas, container });
 
   const editor = useMemo(() => {
@@ -57,6 +60,8 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
         setFontFamily,
         imageFilter,
         setImageFilter,
+        copy,
+        paste,
       });
     } else {
       return undefined;
@@ -70,6 +75,8 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
     strokeDashArray,
     fontFamily,
     imageFilter,
+    copy,
+    paste,
   ]);
 
   const init = useCallback(
@@ -134,6 +141,8 @@ const buildEditor = ({
   setFontFamily,
   imageFilter,
   setImageFilter,
+  copy,
+  paste,
 }: BuildEditorProps): Editor => {
   const getWorkspace = () => {
     return canvas.getObjects().find((object) => object.name === "clip");
@@ -528,6 +537,8 @@ const buildEditor = ({
     fontFamily,
     imageFilter,
     setImageFilter,
+    copy,
+    paste,
     canvas,
   };
 };
