@@ -127,10 +127,28 @@ export const createFilter = (value: string) => {
   return effect;
 };
 
-export function downloadFile(file: string, type: string) {
+export function downloadFile(
+  file: string | Blob,
+  type: string,
+  isBolb = false,
+) {
+  if (isBolb) {
+    const anchorElement = document.createElement("a");
+
+    // 创建一个 URL 指向 blob 数据
+    const url = URL.createObjectURL(file as Blob);
+    anchorElement.href = url;
+    anchorElement.download = `${Math.random()}.${type}`; // 使用更有意义的文件名
+    document.body.appendChild(anchorElement);
+    anchorElement.click();
+    document.body.removeChild(anchorElement);
+
+    return;
+  }
+
   const anchorElement = document.createElement("a");
 
-  anchorElement.href = file;
+  anchorElement.href = file as string;
   anchorElement.download = `${Math.random()}.${type}`;
   document.body.appendChild(anchorElement);
   anchorElement.click();

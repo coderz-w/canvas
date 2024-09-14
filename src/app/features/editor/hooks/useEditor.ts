@@ -217,8 +217,16 @@ const buildEditor = ({
 
     downloadFile(dataUrl, "png");
   };
+  const saveJson = () => {
+    const json = canvas.toJSON(JSON_KEYS);
+    const blob = new Blob([JSON.stringify(json)], { type: "application/json" });
+
+    // 使用 downloadFile 函数下载 Blob 数据
+    downloadFile(blob, "json", true);
+  };
 
   return {
+    saveJson,
     savePng,
     save,
     redo,
