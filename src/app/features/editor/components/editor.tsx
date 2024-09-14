@@ -20,6 +20,7 @@ import { FontSidebar } from "@/app/features/editor/components/fontSidebar";
 import { ImageSidebar } from "@/app/features/editor/components/imageSidebar";
 import { FilterSidebar } from "@/app/features/editor/components/filterSidebar";
 import { DrawSidebar } from "@/app/features/editor/components/drawSidebar";
+import { SettingSidebar } from "@/app/features/editor/components/settingSidebar";
 
 export const Editor = () => {
   const canvasRef = useRef(null);
@@ -126,6 +127,11 @@ export const Editor = () => {
         />
         <DrawSidebar
           editor={editor as EditorType}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <SettingSidebar
+          editor={editor}
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}
         />

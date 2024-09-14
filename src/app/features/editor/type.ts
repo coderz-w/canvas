@@ -18,6 +18,7 @@ export type ActiveTool =
   | "templates";
 
 export type BuildEditorProps = {
+  autoZoom: () => void;
   copy: () => void;
   paste: () => void;
   canvas: fabric.Canvas;
@@ -37,6 +38,9 @@ export type BuildEditorProps = {
 };
 
 export interface Editor {
+  getWorkspace: () => fabric.Object | undefined;
+  changeBackground: (color: string) => void;
+  changeSize: (side: { width: number; height: number }) => void;
   copy: () => void;
   paste: () => void;
   delete2Active: () => void;
