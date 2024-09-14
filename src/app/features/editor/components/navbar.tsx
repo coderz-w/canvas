@@ -1,7 +1,6 @@
 "use client";
 
 import { CiFileOn } from "react-icons/ci";
-import { BsCloudCheck } from "react-icons/bs";
 import { Download, MousePointerClick, Redo2, Undo2 } from "lucide-react";
 
 import { Logo } from "@/app/features/editor/components/logo";
@@ -75,10 +74,6 @@ export const Navbar = ({
         </Hint>
 
         <Separator orientation="vertical" className="mx-2" />
-        <div className="flex items-center gap-x-2">
-          <BsCloudCheck className="size-[20px] text-muted-foreground" />
-          <div className="text-xs text-muted-foreground">Saved</div>
-        </div>
         <div className="ml-auto flex items-center gap-x-4">
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
