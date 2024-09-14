@@ -164,6 +164,23 @@ const buildEditor = ({
   };
 
   return {
+    zoomIn: () => {
+      let zoomRatio = canvas.getZoom();
+      zoomRatio += 0.05;
+
+      const center = canvas.getCenter();
+      canvas.zoomToPoint(
+        new fabric.Point(center.left, center.top),
+        zoomRatio < 0.2 ? 0.2 : zoomRatio,
+      );
+    },
+    zoomOut: () => {
+      let zoomRatio = canvas.getZoom();
+      zoomRatio -= 0.05;
+
+      const center = canvas.getCenter();
+      canvas.zoomToPoint(new fabric.Point(center.left, center.top), zoomRatio);
+    },
     getWorkspace,
     changeSize(size: { width: number; height: number }) {
       const workspace = getWorkspace();
@@ -565,6 +582,7 @@ const buildEditor = ({
     setImageFilter,
     copy,
     paste,
+    autoZoom,
     canvas,
   };
 };
