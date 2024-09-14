@@ -43,6 +43,7 @@ export type BuildEditorProps = {
 };
 
 export interface Editor {
+  savePng: () => void;
   save: () => void;
   redo: () => void;
   undo: () => void;

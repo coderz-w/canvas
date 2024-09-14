@@ -24,7 +24,11 @@ import {
   FONT_SIZE,
   JSON_KEYS,
 } from "@/app/features/editor/const";
-import { createFilter, isTextType } from "@/app/features/editor/utils";
+import {
+  createFilter,
+  downloadFile,
+  isTextType,
+} from "@/app/features/editor/utils";
 import { useHistory } from "@/app/features/editor/hooks/useHistory";
 import { useHotkeys } from "@/app/features/editor/hooks/useHotkeys";
 
@@ -195,7 +199,27 @@ const buildEditor = ({
     canvas.setActiveObject(object);
   };
 
+  const savePng = () => {
+    const { width, height, left, top } = getWorkspace() as fabric.Rect;
+    const options = {
+      name: "Image",
+      format: "png",
+      quality: 1,
+      width,
+      height,
+      left,
+      top,
+    };
+    // 处理缩放的情况
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+
+    const dataUrl = canvas.toDataURL(options);
+
+    downloadFile(dataUrl, "png");
+  };
+
   return {
+    savePng,
     save,
     redo,
     undo,
