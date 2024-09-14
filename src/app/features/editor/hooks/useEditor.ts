@@ -22,8 +22,10 @@ import {
   FONT_FAMILY,
   FONT_WEIGHT,
   FONT_SIZE,
+  JSON_KEYS,
 } from "@/app/features/editor/const";
 import { createFilter, isTextType } from "@/app/features/editor/utils";
+import { useHistory } from "@/app/features/editor/hooks/useHistory";
 
 export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
@@ -38,14 +40,21 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
     useState<number[]>(STROKE_DASH_ARRAY);
   const [imageFilter, setImageFilter] = useState<string>("none");
 
-  useCanvasEvents({ canvas, setSelectedObjects, clearSelectionCallback });
-
+  const { save, canRedo, canUndo, undo, redo, undoStack } = useHistory({
+    canvas,
+  });
   const { copy, paste } = useClipboard({ canvas });
   const { autoZoom } = useAutoResize({ canvas, container });
+  useCanvasEvents({ canvas, setSelectedObjects, clearSelectionCallback, save });
 
   const editor = useMemo(() => {
     if (canvas) {
       return buildEditor({
+        save,
+        undo,
+        redo,
+        canRedo,
+        canUndo,
         canvas,
         fillColor,
         setFillColor,
@@ -78,6 +87,11 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
     copy,
     paste,
     autoZoom,
+    save,
+    redo,
+    undo,
+    canRedo,
+    canUndo,
   ]);
 
   const init = useCallback(
@@ -118,6 +132,12 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
       initialCanvas.centerObject(initialWorkspace);
       initialCanvas.clipPath = initialWorkspace;
 
+      //  不传入这个会有bug，比如side区域未收缩的时候加入的元素位置会不对
+      const initialState = JSON.stringify(initialCanvas.toJSON(JSON_KEYS));
+
+      if (undoStack.current.at(-1) !== initialState)
+        undoStack.current.push(initialState);
+
       setCanvas(initialCanvas);
       setContainer(initialContainer);
     },
@@ -145,6 +165,11 @@ const buildEditor = ({
   copy,
   paste,
   autoZoom,
+  save,
+  redo,
+  undo,
+  canRedo,
+  canUndo,
 }: BuildEditorProps): Editor => {
   const getWorkspace = () => {
     return canvas.getObjects().find((object) => object.name === "clip");
@@ -164,6 +189,11 @@ const buildEditor = ({
   };
 
   return {
+    save,
+    redo,
+    undo,
+    canRedo,
+    canUndo,
     zoomIn: () => {
       let zoomRatio = canvas.getZoom();
       zoomRatio += 0.05;

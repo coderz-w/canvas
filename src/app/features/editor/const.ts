@@ -131,3 +131,14 @@ export const filters = [
   "saturation",
   "gamma",
 ];
+
+export const JSON_KEYS = [
+  "name",
+  "gradientAngle",
+  "selectable",
+  "hasControls",
+  "linkData",
+  "editable",
+  "extensionType",
+  "extension",
+];

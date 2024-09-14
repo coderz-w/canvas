@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 import { Logo } from "@/app/features/editor/components/logo";
-import { ActiveTool } from "@/app/features/editor/type";
+import { ActiveTool, Editor } from "@/app/features/editor/type";
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -24,11 +24,16 @@ import {
 import { cn } from "@/lib/utils";
 
 interface NavbarProps {
+  editor: Editor | undefined;
   activeTool: ActiveTool;
   onChangeActiveTool: (tool: ActiveTool) => void;
 }
 
-export const Navbar = ({ activeTool, onChangeActiveTool }: NavbarProps) => {
+export const Navbar = ({
+  activeTool,
+  onChangeActiveTool,
+  editor,
+}: NavbarProps) => {
   return (
     <nav className="flex items-center w-full p-4 h-[68px] gap-x-8 border-b lg:pl-[34px]">
       <Logo />
@@ -77,8 +82,9 @@ export const Navbar = ({ activeTool, onChangeActiveTool }: NavbarProps) => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => {}} // TODO: Add functionality
-            className="" // TODO: add dynamic class
+            onClick={() => {
+              editor?.undo();
+            }}
           >
             <Undo2 className="size-4" />
           </Button>
@@ -89,8 +95,9 @@ export const Navbar = ({ activeTool, onChangeActiveTool }: NavbarProps) => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => {}} // TODO: Add functionality
-            className="" // TODO: add dynamic class
+            onClick={() => {
+              editor?.redo();
+            }}
           >
             <Redo2 className="size-4" />
           </Button>
