@@ -26,6 +26,7 @@ import {
 } from "@/app/features/editor/const";
 import { createFilter, isTextType } from "@/app/features/editor/utils";
 import { useHistory } from "@/app/features/editor/hooks/useHistory";
+import { useHotkeys } from "@/app/features/editor/hooks/useHotkeys";
 
 export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
@@ -39,13 +40,19 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
   const [strokeDashArray, setStrokeDashArray] =
     useState<number[]>(STROKE_DASH_ARRAY);
   const [imageFilter, setImageFilter] = useState<string>("none");
-
   const { save, canRedo, canUndo, undo, redo, undoStack } = useHistory({
     canvas,
   });
   const { copy, paste } = useClipboard({ canvas });
   const { autoZoom } = useAutoResize({ canvas, container });
   useCanvasEvents({ canvas, setSelectedObjects, clearSelectionCallback, save });
+  useHotkeys({
+    canvas,
+    undo,
+    redo,
+    copy,
+    paste,
+  });
 
   const editor = useMemo(() => {
     if (canvas) {
