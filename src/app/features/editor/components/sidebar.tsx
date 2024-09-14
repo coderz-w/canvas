@@ -5,8 +5,8 @@ import {
   ImageIcon,
   Settings,
   Shapes,
-  Sparkles,
   Type,
+  Pencil,
 } from "lucide-react";
 
 import { ActiveTool } from "@/app/features/editor/type";
@@ -46,10 +46,10 @@ export const Sidebar = ({ activeTool, onChangeActiveTool }: SidebarProps) => {
           onClick={() => onChangeActiveTool("shapes")}
         />
         <SidebarItem
-          icon={Sparkles}
-          label="AI"
-          isActive={activeTool === "ai"}
-          onClick={() => onChangeActiveTool("ai")}
+          icon={Pencil}
+          label="画笔"
+          isActive={activeTool === "draw"}
+          onClick={() => onChangeActiveTool("draw")}
         />
         <SidebarItem
           icon={Settings}

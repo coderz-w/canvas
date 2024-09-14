@@ -69,12 +69,11 @@ export const useEditor = ({ clearSelectionCallback }: EditorHookProps) => {
   }, [
     canvas,
     fillColor,
-    selectedObjects,
     strokeColor,
     strokeWidth,
+    selectedObjects,
     strokeDashArray,
     fontFamily,
-    imageFilter,
     copy,
     paste,
   ]);
@@ -162,6 +161,16 @@ const buildEditor = ({
   };
 
   return {
+    enableDrawingMode: () => {
+      canvas.discardActiveObject();
+      canvas.renderAll();
+      canvas.isDrawingMode = true;
+      canvas.freeDrawingBrush.color = strokeColor;
+      canvas.freeDrawingBrush.width = strokeWidth;
+    },
+    disableDrawingMode: () => {
+      canvas.isDrawingMode = false;
+    },
     delete2Active: () => {
       canvas.getActiveObjects().forEach((object) => {
         canvas.remove(object);
@@ -388,6 +397,7 @@ const buildEditor = ({
 
         object.set("stroke", color);
       });
+      canvas.freeDrawingBrush.color = color;
       canvas?.renderAll();
     },
     setStrokeWidth2Active: (width: number) => {
@@ -395,6 +405,7 @@ const buildEditor = ({
       canvas?.getActiveObjects().forEach((object) => {
         object.set("strokeWidth", width);
       });
+      canvas.freeDrawingBrush.width = width;
       canvas?.renderAll();
     },
     setStrokeDashArray2Active: (value: number[]) => {

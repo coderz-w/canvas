@@ -75,6 +75,8 @@ export interface Editor {
   getActiveFontSize: () => number;
   getActiveFontLinethrough: () => boolean;
   getActiveFontUnderline: () => boolean;
+  enableDrawingMode: () => void;
+  disableDrawingMode: () => void;
   fillColor: string;
   strokeColor: string;
   strokeWidth: number;

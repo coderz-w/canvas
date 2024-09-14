@@ -19,6 +19,7 @@ import { TextSidebar } from "@/app/features/editor/components/textSidebar";
 import { FontSidebar } from "@/app/features/editor/components/fontSidebar";
 import { ImageSidebar } from "@/app/features/editor/components/imageSidebar";
 import { FilterSidebar } from "@/app/features/editor/components/filterSidebar";
+import { DrawSidebar } from "@/app/features/editor/components/drawSidebar";
 
 export const Editor = () => {
   const canvasRef = useRef(null);
@@ -37,21 +38,21 @@ export const Editor = () => {
 
   const onChangeActiveTool = useCallback(
     (tool: ActiveTool) => {
+      if (tool === "draw") {
+        editor?.enableDrawingMode();
+      }
+
+      if (activeTool === "draw") {
+        editor?.disableDrawingMode();
+      }
+
       if (tool === activeTool) {
         return setActiveTool("select");
       }
 
-      if (tool === "draw") {
-        // TODO: Enable draw mode
-      }
-
-      if (activeTool === "draw") {
-        // TODO: Disable draw mode
-      }
-
       setActiveTool(tool);
     },
-    [activeTool],
+    [activeTool, editor],
   );
 
   useEffect(() => {
@@ -119,6 +120,11 @@ export const Editor = () => {
           onChangeActiveTool={onChangeActiveTool}
         />
         <FilterSidebar
+          editor={editor as EditorType}
+          activeTool={activeTool}
+          onChangeActiveTool={onChangeActiveTool}
+        />
+        <DrawSidebar
           editor={editor as EditorType}
           activeTool={activeTool}
           onChangeActiveTool={onChangeActiveTool}
